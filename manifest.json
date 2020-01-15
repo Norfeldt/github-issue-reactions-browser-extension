@@ -1,0 +1,12 @@
+{ "manifest_version": 2,
+  "name": "Github Issue Reactions",
+  "version": "1.0",
+  "description": "List a link of reactions on a github issue page",
+  "permissions": ["tabs", "*://*.github.com/*/issues/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://*.github.com/*/issues/*"],
+      "js": ["background.js"]
+    }
+  ]
+}
