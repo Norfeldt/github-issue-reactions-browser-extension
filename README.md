@@ -1,6 +1,8 @@
 # github-issue-reactions-chrome-extension
 List a link of reactions on a github issue page
 
+![Examlpe screenshot](example.png)
+
 ## Setup
 
 1. Clone this repo
