@@ -1,18 +1,21 @@
-;(function() {
-  const URL =
-    window.location.origin + window.location.pathname + window.location.search
-  const header = document.querySelector('#partial-discussion-sidebar')
-  header.style = `position: relative;height: 100%;`
-  const wrapper = header.appendChild(document.createElement('div'))
-  wrapper.style = `
+const URL =
+  window.location.origin + window.location.pathname + window.location.search
+
+const header = document.querySelector('#partial-discussion-sidebar')
+header.style = `position: relative;height: 100%;`
+const wrapper = header.appendChild(document.createElement('div'))
+wrapper.style = `
       position:sticky;
       position: -webkit-sticky;
       top:10px;`
-  const title = document.createElement('div')
-  title.style = `font-weight: bold`
-  title.appendChild(document.createTextNode('Reactions'))
-  wrapper.appendChild(title)
+const title = document.createElement('div')
+title.style = `font-weight: bold`
+title.appendChild(document.createTextNode('Reactions'))
+wrapper.appendChild(title)
 
+addReactionNav()
+
+function addReactionNav() {
   // Grabbing all 👍
   const plusOnes = document.querySelectorAll('[alias="+1"].mr-1')
 
@@ -43,4 +46,4 @@
     a.style = `display:block;`
     wrapper.appendChild(a)
   })
-})()
+}
