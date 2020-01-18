@@ -7,7 +7,8 @@
   "content_scripts": [
     {
       "matches": ["*://*.github.com/*/issues/*"],
-      "js": ["background.js"]
+      "js": ["background.js"],
+      "run_at": "document_end"
     }
   ]
 }
