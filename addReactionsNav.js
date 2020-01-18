@@ -1,21 +1,33 @@
 const URL =
   window.location.origin + window.location.pathname + window.location.search
-
 const header = document.querySelector('#partial-discussion-sidebar')
 header.style = `position: relative;height: 100%;`
-const wrapper = header.appendChild(document.createElement('div'))
-wrapper.style = `
+let wrapper = getWrapper()
+
+// The isolated world made it difficult to detect DOM changes in the shared DOM
+// So this monkey-hack to make it refresh when ..
+setInterval(() => {
+  wrapper.remove()
+  wrapper = getWrapper()
+  addReactionNav()
+}, 1000)
+
+function getWrapper() {
+  const header = document.querySelector('#partial-discussion-sidebar')
+  const wrapper = header.appendChild(document.createElement('div'))
+  wrapper.style = `
       position:sticky;
       position: -webkit-sticky;
       top:10px;`
-const title = document.createElement('div')
-title.style = `font-weight: bold`
-title.appendChild(document.createTextNode('Reactions'))
-wrapper.appendChild(title)
-
-addReactionNav()
+  return wrapper
+}
 
 function addReactionNav() {
+  const title = document.createElement('div')
+  title.style = `font-weight: bold`
+  title.appendChild(document.createTextNode('Reactions'))
+  wrapper.appendChild(title)
+
   // Grabbing all 👍
   const plusOnes = document.querySelectorAll('[alias="+1"].mr-1')
 
