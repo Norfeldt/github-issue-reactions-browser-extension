@@ -28,11 +28,29 @@ function addReactionNav() {
   title.appendChild(document.createTextNode('Reactions'))
   wrapper.appendChild(title)
 
-  // Grabbing all 👍
-  const plusOnes = document.querySelectorAll('[alias="+1"].mr-1')
+  // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
+  const reactionsNodes = document.querySelectorAll(`
+    [alias="+1"].mr-1,
+    [alias="rocket"].mr-1,
+    [alias="tada"].mr-1,
+    [alias="heart"].mr-1,
+    [alias="smile"].mr-1,
+    [alias="thinking_face"].mr-1,
+    [alias="-1"].mr-1,
+    [alias="eyes"].mr-1
+  `)
 
-  plusOnes.forEach(node => {
-    const plusOneText = node.parentElement.parentElement.innerText
+  const reactionsNodesParents = [
+    ...new Set(
+      Array.from(reactionsNodes).map(node => node.parentElement.parentElement)
+    ),
+  ]
+
+  reactionsNodesParents.forEach(node => {
+    const a = document.createElement('a')
+    const linkText = document.createTextNode('\n' + node.innerText)
+    a.appendChild(linkText)
+    a.title = node.innerText
 
     let id = null
     while (id == null || node != null) {
@@ -49,13 +67,9 @@ function addReactionNav() {
       node = node.parentNode
     }
     const postURL = URL + '#' + id
-
-    const a = document.createElement('a')
-    const linkText = document.createTextNode('\n' + plusOneText)
-    a.appendChild(linkText)
-    a.title = plusOneText
     a.href = postURL
     a.style = `display:block;`
+
     wrapper.appendChild(a)
   })
 }
