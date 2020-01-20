@@ -3,11 +3,12 @@
   "name": "Github Issue Reactions",
   "version": "1.0",
   "description": "List a link of reactions on a github issue page",
-  "permissions": ["tabs", "*://*.github.com/*/issues/*"],
+  "permissions": ["https://www.github.com/", "http://www.github.com/"],
   "content_scripts": [
     {
       "matches": ["*://*.github.com/*/issues/*"],
-      "js": ["background.js"]
+      "js": ["addReactionsNav.js"],
+      "run_at": "document_end"
     }
   ]
 }
