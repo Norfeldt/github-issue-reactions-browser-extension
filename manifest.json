@@ -1,4 +1,5 @@
-{ "manifest_version": 2,
+{
+  "manifest_version": 2,
   "name": "Github Issue Reactions",
   "version": "1.0",
   "description": "List a link of reactions on a github issue page",
