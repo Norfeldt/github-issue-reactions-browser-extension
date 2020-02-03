@@ -7,7 +7,7 @@ let wrapper = getWrapper();
 addReactionNav(wrapper);
 
 // Select the node that will be observed for mutations.
-const targetNode = document.querySelector('body');
+const targetNode = document.querySelector("body");
 
 // Options for the observer (which mutations to observe).
 const config = {
@@ -17,7 +17,10 @@ const config = {
 
 // Create an observer instance linked to the callback function.
 const observer = new MutationObserver(mutations => {
-  if (!targetNode.contains(wrapper) || mutations.some(mutation => mutation.target.matches('.js-timeline-item'))) {
+  if (
+    !targetNode.contains(wrapper) ||
+    mutations.some(mutation => mutation.target.matches(".js-timeline-item"))
+  ) {
     wrapper.remove();
     wrapper = getWrapper();
     addReactionNav();
@@ -30,10 +33,13 @@ observer.observe(targetNode, config);
 function getWrapper() {
   const header = document.querySelector("#partial-discussion-sidebar");
   const wrapper = header.appendChild(document.createElement("div"));
+  const top =
+    document.querySelectorAll(".gh-header-sticky").length > 0 ? 70 : 10;
+
   wrapper.style = `
-      position:sticky;
+      position: sticky;
       position: -webkit-sticky;
-      top:10px;`;
+      top: ${top}px;`;
   return wrapper;
 }
 
