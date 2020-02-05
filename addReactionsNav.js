@@ -27,6 +27,7 @@ const observer = new MutationObserver(mutations => {
 // Start observing the target node for configured mutations.
 observer.observe(targetNode, config);
 
+// Create a sticking wrapper to place all reactions
 function getWrapper() {
   const header = document.querySelector("#partial-discussion-sidebar");
   const wrapper = header.appendChild(document.createElement("div"));
@@ -37,6 +38,7 @@ function getWrapper() {
   return wrapper;
 }
 
+// Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
   const title = document.createElement("div");
   title.style = `font-weight: bold`;
@@ -55,12 +57,14 @@ function addReactionNav() {
     [alias="eyes"].mr-1
   `);
 
+  // Some post have multiple reactions but same parent. Get unqiue using Set()
   const reactionsNodesParents = [
     ...new Set(
       Array.from(reactionsNodes).map(node => node.parentElement.parentElement)
     )
   ];
 
+  // Stick reactions in along with a post link
   reactionsNodesParents.forEach(node => {
     const a = document.createElement("a");
     const linkText = document.createTextNode("\n" + node.innerText);

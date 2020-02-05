@@ -1,1 +1,1 @@
-chrome.runtime.onMessage.addListener(() => console.log('message'))
+// Nothing here yet.. Currently no need for a background job
