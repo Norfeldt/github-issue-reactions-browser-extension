@@ -21,8 +21,6 @@ List a link of reactions on a Github issue page
 5. Select the `github_issue_reactions.js` file from this repo
 6. Enjoy!
 
-
-Just Clone the repo, go to "about:debugging" > "This Firefox" > "Load Temporary Add-On" and select one of the files.
 ---
 
 ## Why is it not on the Chrome Web Store?
