@@ -21,6 +21,10 @@ List a link of reactions on a Github issue page
 5. Select the `github_issue_reactions.js` file from this repo
 6. Enjoy!
 
+## Not Working Any More?
+
+Try to do a git pull to see if it has been fixed (don't forget to go into your extensions and reload the lasted version).
+
 ---
 
 ## Why is it not on the Chrome Web Store?
