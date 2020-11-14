@@ -1,5 +1,3 @@
-const URL =
-  window.location.origin + window.location.pathname + window.location.search
 const header = document.querySelector('#partial-discussion-sidebar')
 header.style = `position: relative;height: 100%;`
 let wrapper = getWrapper()
@@ -46,57 +44,65 @@ function getWrapper() {
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
+  // Section header
   const title = document.createElement('div')
   title.style = `font-weight: bold`
   title.appendChild(document.createTextNode('Reactions'))
   wrapper.appendChild(title)
 
+  const issueUrl =
+    window.location.origin + window.location.pathname + window.location.search
+
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  const reactionsNodes = document.querySelectorAll(`
-    [alias="+1"].mr-1,
-    [alias="thumbs up"].mr-1,
-    [alias="rocket"].mr-1,
-    [alias="tada"].mr-1,
-    [alias="heart"].mr-1,
-    [alias="smile"].mr-1,
-    [alias="thinking_face"].mr-1,
-    [alias="-1"].mr-1,
-    [alias="thumbs down"].mr-1,
-    [alias="eyes"].mr-1
-  `)
+  document
+    .querySelectorAll('div.comment-reactions-options')
+    .forEach((reactionSection) => {
+      let reactions = ''
+      reactionSection
+        .querySelectorAll('button.reaction-summary-item')
+        .forEach((btn) => {
+          reactions += btn.textContent.replace(/\s+/g, '') + ' '
+        })
+      const a = document.createElement('a')
+      const linkText = document.createTextNode('\n' + reactions)
+      a.appendChild(linkText)
+      a.title = reactions
 
-  // Some post have multiple reactions but same parent. Get unqiue using Set()
-  const reactionsNodesParents = [
-    ...new Set(
-      Array.from(reactionsNodes).map((node) => node.parentElement.parentElement)
-    ),
-  ]
-
-  // Stick reactions in along with a post link
-  reactionsNodesParents.forEach((node) => {
-    const a = document.createElement('a')
-    const linkText = document.createTextNode('\n' + node.innerText)
-    a.appendChild(linkText)
-    a.title = node.innerText
-
-    let id = null
-    while (id == null || node != null) {
-      if (node.tagName === 'A' && node.name) {
-        id = node.name
-        break
+      let id = null
+      while (id == null || node != null) {
+        if (reactionSection.tagName === 'A' && reactionSection.name) {
+          id = reactionSection.name
+          break
+        }
+        if (reactionSection.id) {
+          id = reactionSection.id
+          break
+        }
+        reactionSection = reactionSection.parentNode
       }
 
-      if (node.id) {
-        id = node.id
-        break
-      }
+      a.href = issueUrl + '#' + id
+      a.style = `display:block;`
 
-      node = node.parentNode
-    }
-    const postURL = URL + '#' + id
-    a.href = postURL
-    a.style = `display:block;`
+      wrapper.appendChild(a)
 
-    wrapper.appendChild(a)
-  })
+      // Footer
+      const footer = document.createElement('div')
+      footer.style = `font-weight: bold`
+
+      const madeBySpan = document.createElement('span')
+      madeBySpan.appendChild(document.createTextNode('💻 Made by '))
+      footer.appendChild(madeBySpan)
+
+      const authorLink = document.createElement('a')
+      authorLink.href = 'https://github.com/Norfeldt'
+      authorLink.appendChild(document.createTextNode('Norfeldt'))
+      footer.appendChild(authorLink)
+
+      const waveSpan = document.createElement('span')
+      waveSpan.appendChild(document.createTextNode(' 👋'))
+      footer.appendChild(waveSpan)
+
+      wrapper.appendChild(footer)
+    })
 }

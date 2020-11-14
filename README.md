@@ -31,4 +31,4 @@ Try to do a git pull to see if it has been fixed (don't forget to go into your e
 
 In the future it might come, but for now it's just easier to distribute it this way.
 
-Another good reason would be that it's nice to inspect and control the extensions that injects code into your Github pages. 
+Another good reason would be that it is more secure to inspect and control an extensions that injects code into your Github (both private and public pages).
