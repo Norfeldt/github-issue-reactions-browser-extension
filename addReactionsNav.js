@@ -85,5 +85,24 @@ function addReactionNav() {
       a.style = `display:block;`
 
       wrapper.appendChild(a)
+
+      // Footer
+      const footer = document.createElement('div')
+      footer.style = `font-weight: bold`
+
+      const madeBySpan = document.createElement('span')
+      madeBySpan.appendChild(document.createTextNode('💻 Made by '))
+      footer.appendChild(madeBySpan)
+
+      const authorLink = document.createElement('a')
+      authorLink.href = 'https://github.com/Norfeldt'
+      authorLink.appendChild(document.createTextNode('Norfeldt'))
+      footer.appendChild(authorLink)
+
+      const waveSpan = document.createElement('span')
+      waveSpan.appendChild(document.createTextNode(' 👋'))
+      footer.appendChild(waveSpan)
+
+      wrapper.appendChild(footer)
     })
 }
