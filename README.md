@@ -27,4 +27,4 @@ List a link of reactions on a Github issue page
 
 In the future it might come, but for now it's just easier to distribute it this way.
 
-Another good reason would be that it's nice to inspect and control the extensions that injects code into your Github pages. 
+Another good reason would be that it is more secure to inspect and control an extensions that injects code into your Github (both private and public pages).
