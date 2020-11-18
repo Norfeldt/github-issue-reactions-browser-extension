@@ -85,24 +85,39 @@ function addReactionNav() {
       a.style = `display:block;`
 
       wrapper.appendChild(a)
-
-      // Footer
-      const footer = document.createElement('div')
-      footer.style = `font-weight: bold`
-
-      const madeBySpan = document.createElement('span')
-      madeBySpan.appendChild(document.createTextNode('💻 Made by '))
-      footer.appendChild(madeBySpan)
-
-      const authorLink = document.createElement('a')
-      authorLink.href = 'https://github.com/Norfeldt'
-      authorLink.appendChild(document.createTextNode('Norfeldt'))
-      footer.appendChild(authorLink)
-
-      const waveSpan = document.createElement('span')
-      waveSpan.appendChild(document.createTextNode(' 👋'))
-      footer.appendChild(waveSpan)
-
-      wrapper.appendChild(footer)
     })
+
+  // Footer
+  const footer = document.createElement('div')
+  footer.style = `font-weight: bold`
+
+  const line1Div = document.createElement('div')
+  const line2Div = document.createElement('div')
+
+  const laptopEmojiSpan = document.createElement('span')
+  laptopEmojiSpan.appendChild(document.createTextNode('💻  '))
+  line1Div.appendChild(laptopEmojiSpan)
+
+  const extensionLink = document.createElement('a')
+  extensionLink.href =
+    'https://github.com/NorfeldtAbtion/github-issue-reactions-browser-extension'
+  extensionLink.appendChild(document.createTextNode('Reactions Extension'))
+  line1Div.appendChild(extensionLink)
+
+  const madeBySpan = document.createElement('span')
+  madeBySpan.appendChild(document.createTextNode('Made By '))
+  line2Div.appendChild(madeBySpan)
+
+  const authorLink = document.createElement('a')
+  authorLink.href = 'https://github.com/Norfeldt'
+  authorLink.appendChild(document.createTextNode('Norfeldt'))
+  line2Div.appendChild(authorLink)
+
+  const waveEmojiSpan = document.createElement('span')
+  waveEmojiSpan.appendChild(document.createTextNode(' 👋'))
+  footer.appendChild(waveEmojiSpan)
+
+  footer.appendChild(line1Div)
+  footer.appendChild(line2Div)
+  wrapper.appendChild(footer)
 }
