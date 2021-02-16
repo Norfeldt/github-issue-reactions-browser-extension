@@ -43,6 +43,7 @@ function getWrapper() {
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
+  wrapper.innerHTML = ''
   wrapper.appendChild(Title())
   wrapper.appendChild(Reactions())
   wrapper.appendChild(Credits())
