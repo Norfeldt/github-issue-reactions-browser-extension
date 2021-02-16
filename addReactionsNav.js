@@ -1,5 +1,6 @@
 const header = document.querySelector('#partial-discussion-sidebar')
-header.style = `position: relative;height: 100%;`
+header.style = 'position: relative; height: 100%;'
+
 let wrapper = getWrapper()
 
 addReactionNav(wrapper)
@@ -35,27 +36,34 @@ function getWrapper() {
   const top =
     document.querySelectorAll('.gh-header-sticky').length > 0 ? 70 : 10
 
-  wrapper.style = `
-      position: sticky;
-      position: -webkit-sticky;
-      top: ${top}px;`
+  wrapper.style =
+    'position: sticky; position: -webkit-sticky; top: ' + top + 'px;'
   return wrapper
 }
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
-  // Section header
+  wrapper.appendChild(Title())
+  wrapper.appendChild(Reactions())
+  wrapper.appendChild(Credits())
+}
+
+function Title() {
   const title = document.createElement('div')
-  title.style = `font-weight: bold`
+  title.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
   title.appendChild(document.createTextNode('Reactions'))
-  wrapper.appendChild(title)
+  return title
+}
+
+function Reactions() {
+  const all = document.createElement('div')
 
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
 
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
   document
-    .querySelectorAll('div.comment-reactions-options')
+    .querySelectorAll('.comment-reactions-options')
     .forEach((reactionSection) => {
       let reactions = ''
       reactionSection
@@ -82,42 +90,40 @@ function addReactionNav() {
       }
 
       a.href = issueUrl + '#' + id
-      a.style = `display:block;`
+      a.style = 'display: block;'
 
-      wrapper.appendChild(a)
+      all.appendChild(a)
     })
 
-  // Footer
-  const footer = document.createElement('div')
-  footer.style = `font-weight: bold`
+  return all
+}
 
-  const line1Div = document.createElement('div')
-  const line2Div = document.createElement('div')
+function Credits() {
+  const credits = document.createElement('div')
+  credits.style =
+    'display: flex; align-items: center; margin: 1rem 0; font-size: 0.8rem; color: #777;'
 
   const laptopEmojiSpan = document.createElement('span')
+  laptopEmojiSpan.style = 'margin-right: 0.25rem;'
   laptopEmojiSpan.appendChild(document.createTextNode('💻  '))
-  line1Div.appendChild(laptopEmojiSpan)
 
   const extensionLink = document.createElement('a')
   extensionLink.href =
     'https://github.com/NorfeldtAbtion/github-issue-reactions-browser-extension'
   extensionLink.appendChild(document.createTextNode('Reactions Extension'))
-  line1Div.appendChild(extensionLink)
 
   const madeBySpan = document.createElement('span')
-  madeBySpan.appendChild(document.createTextNode('Made By '))
-  line2Div.appendChild(madeBySpan)
+  madeBySpan.style = 'margin: 0 0.25rem;'
+  madeBySpan.appendChild(document.createTextNode('made by'))
 
   const authorLink = document.createElement('a')
   authorLink.href = 'https://github.com/Norfeldt'
   authorLink.appendChild(document.createTextNode('Norfeldt'))
-  line2Div.appendChild(authorLink)
 
-  const waveEmojiSpan = document.createElement('span')
-  waveEmojiSpan.appendChild(document.createTextNode(' 👋'))
-  footer.appendChild(waveEmojiSpan)
+  credits.appendChild(laptopEmojiSpan)
+  credits.appendChild(extensionLink)
+  credits.appendChild(madeBySpan)
+  credits.appendChild(authorLink)
 
-  footer.appendChild(line1Div)
-  footer.appendChild(line2Div)
-  wrapper.appendChild(footer)
+  return credits
 }
