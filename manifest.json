@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
   "name": "Github Issue Reactions",
-  "version": "1.0",
-  "description": "List a link of reactions on a github issue page",
+  "version": "1.1.0",
+  "description": "List a link of reactions on a github issue and pull request page",
   "permissions": ["https://www.github.com/", "http://www.github.com/"],
   "content_scripts": [
     {
-      "matches": ["*://*.github.com/*/issues/*"],
+      "matches": ["*://*.github.com/*/issues/*", "*://*.github.com/*/pull/*"],
       "js": ["addReactionsNav.js"],
       "run_at": "document_end"
     }
