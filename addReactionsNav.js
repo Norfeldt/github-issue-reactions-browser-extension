@@ -1,4 +1,11 @@
-const header = document.querySelector('#partial-discussion-sidebar')
+// Shorthand helpers for querying elements.
+const one = (selector) => document.querySelector(selector)
+const all = (selector) => document.querySelectorAll(selector)
+const elm = (element) => document.createElement(element)
+const text = (text) => document.createTextNode(text)
+console.log(all)
+
+const header = one('#partial-discussion-sidebar')
 header.style = 'position: relative; height: 100%;'
 
 let wrapper = getWrapper()
@@ -6,7 +13,7 @@ let wrapper = getWrapper()
 addReactionNav(wrapper)
 
 // Select the node that will be observed for mutations.
-const targetNode = document.querySelector('body')
+const targetNode = one('body')
 
 // Options for the observer (which mutations to observe).
 const config = {
@@ -31,10 +38,9 @@ observer.observe(targetNode, config)
 
 // Create a sticking wrapper to place all reactions
 function getWrapper() {
-  const header = document.querySelector('#partial-discussion-sidebar')
-  const wrapper = header.appendChild(document.createElement('div'))
-  const top =
-    document.querySelectorAll('.gh-header-sticky').length > 0 ? 70 : 10
+  const header = one('#partial-discussion-sidebar')
+  const wrapper = header.appendChild(elm('div'))
+  const top = all('.gh-header-sticky').length > 0 ? 70 : 10
 
   wrapper.style =
     'position: sticky; position: -webkit-sticky; top: ' + top + 'px;'
@@ -50,81 +56,101 @@ function addReactionNav() {
 }
 
 function Title() {
-  const title = document.createElement('div')
+  const title = elm('div')
   title.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
-  title.appendChild(document.createTextNode('Reactions'))
+  title.appendChild(text('Reactions'))
   return title
 }
 
 function Reactions() {
-  const all = document.createElement('div')
-
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
 
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  document
-    .querySelectorAll('.comment-reactions-options')
-    .forEach((reactionSection) => {
-      let reactions = ''
-      reactionSection
-        .querySelectorAll('button.reaction-summary-item')
-        .forEach((btn) => {
-          reactions += btn.textContent.replace(/\s+/g, '') + ' '
-        })
-      const a = document.createElement('a')
-      const linkText = document.createTextNode('\n' + reactions)
-      a.appendChild(linkText)
-      a.title = reactions
+  const reactionSections = all('.comment-reactions-options')
+  const reactions = elm('div')
+  reactionSections.forEach((reactionSection) =>
+    reactions.appendChild(ReactionItem(reactionSection, issueUrl))
+  )
+  return reactions
+}
 
-      let id = null
-      while (id == null || node != null) {
-        if (reactionSection.tagName === 'A' && reactionSection.name) {
-          id = reactionSection.name
-          break
-        }
-        if (reactionSection.id) {
-          id = reactionSection.id
-          break
-        }
-        reactionSection = reactionSection.parentNode
-      }
+function ReactionItem(reactionSection, issueUrl) {
+  // Get the reaction ID
+  let id = getCommentId(reactionSection)
 
-      a.href = issueUrl + '#' + id
-      a.style = 'display: block;'
+  // Construct the reaction text
+  let reactions = elm('div')
+  reactionSection
+    .querySelectorAll('button.reaction-summary-item')
+    .forEach((btn) => {
+      // Get an array of the emoji and the count for each
+      // reaction
+      const reaction = btn.textContent
+        .replace(/\s+/g, ' ')
+        .split(' ')
+        .filter(Boolean)
 
-      all.appendChild(a)
+      const emoji = elm('span')
+      emoji.appendChild(text(reaction[0]))
+      emoji.style = 'margin-right: 0.4rem'
+
+      const count = elm('span')
+      count.style = 'margin-right: 0.6rem'
+      count.appendChild(text(reaction[1]))
+
+      reactions.appendChild(emoji)
+      reactions.appendChild(count)
     })
 
-  return all
+  // Create the reaction link
+  const a = elm('a')
+  a.appendChild(reactions)
+  a.title = reactions
+  a.href = issueUrl + '#' + id
+  a.style = 'display: block; margin: 0.2rem 0;'
+  return a
 }
 
 function Credits() {
-  const credits = document.createElement('div')
-  credits.style =
-    'display: flex; align-items: center; margin: 1rem 0; font-size: 0.8rem; color: #777;'
+  const credits = elm('div')
+  credits.style = 'margin: 1rem 0; font-size: 0.8rem; color: #777;'
 
-  const laptopEmojiSpan = document.createElement('span')
-  laptopEmojiSpan.style = 'margin-right: 0.25rem;'
-  laptopEmojiSpan.appendChild(document.createTextNode('💻  '))
-
-  const extensionLink = document.createElement('a')
+  const extensionLink = elm('a')
+  extensionLink.style = 'margin-left: 0.5rem; font-weight: bold'
   extensionLink.href =
     'https://github.com/NorfeldtAbtion/github-issue-reactions-browser-extension'
-  extensionLink.appendChild(document.createTextNode('Reactions Extension'))
+  extensionLink.appendChild(text('Reactions Extension'))
 
-  const madeBySpan = document.createElement('span')
-  madeBySpan.style = 'margin: 0 0.25rem;'
-  madeBySpan.appendChild(document.createTextNode('made by'))
-
-  const authorLink = document.createElement('a')
+  const authorLink = elm('a')
   authorLink.href = 'https://github.com/Norfeldt'
-  authorLink.appendChild(document.createTextNode('Norfeldt'))
+  authorLink.appendChild(text('Norfeldt'))
 
-  credits.appendChild(laptopEmojiSpan)
+  credits.appendChild(text('💻  '))
   credits.appendChild(extensionLink)
-  credits.appendChild(madeBySpan)
+  credits.appendChild(text(' made by '))
   credits.appendChild(authorLink)
 
   return credits
+}
+
+/**
+ * Traverse up the tree of parent elements till we find
+ * the link to the comment so we can get the reaction link.
+ */
+function getCommentId(elm) {
+  let id = null
+  let curr = elm
+  while (id === null || node !== null) {
+    if (elm.tagName === 'A' && curr.name) {
+      id = curr.name
+      break
+    }
+    if (curr.id) {
+      id = curr.id
+      break
+    }
+    curr = curr.parentNode
+  }
+  return id
 }
