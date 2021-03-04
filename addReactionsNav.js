@@ -3,7 +3,6 @@ const one = (selector) => document.querySelector(selector)
 const all = (selector) => document.querySelectorAll(selector)
 const elm = (element) => document.createElement(element)
 const text = (text) => document.createTextNode(text)
-console.log(all)
 
 const header = one('#partial-discussion-sidebar')
 header.style = 'position: relative; height: 100%;'
