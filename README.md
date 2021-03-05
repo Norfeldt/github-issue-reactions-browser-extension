@@ -1,4 +1,5 @@
 # Github Issue Reactions Chrome & Firefox Extension
+
 List a link of reactions on a Github issue page
 
 ![Example screenshot](example.png)
@@ -9,8 +10,7 @@ List a link of reactions on a Github issue page
 2. Open Chrome Extensions
 3. Enable Developer mode
 4. Pick Load unpacked and pick the cloned repo
-6. Enjoy! 👍
-
+5. Enjoy! 👍
 
 ## Firefox Setup
 
