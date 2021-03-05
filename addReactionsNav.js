@@ -125,10 +125,16 @@ function Credits() {
   authorLink.href = 'https://github.com/Norfeldt'
   authorLink.appendChild(text('Norfeldt'))
 
+  const coAuthorLink = elm('a')
+  coAuthorLink.href = 'https://github.com/danawoodman'
+  coAuthorLink.appendChild(text('danawoodman'))
+
   credits.appendChild(text('💻  '))
   credits.appendChild(extensionLink)
-  credits.appendChild(text(' made by '))
+  credits.appendChild(text(' made by\n'))
   credits.appendChild(authorLink)
+  credits.appendChild(text(', '))
+  credits.appendChild(coAuthorLink)
 
   return credits
 }
