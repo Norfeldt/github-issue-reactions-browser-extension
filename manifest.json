@@ -7,7 +7,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.github.com/*/issues/*", "*://*.github.com/*/pull/*"],
-      "js": ["addReactionsNav.js"],
+      "js": ["src/addReactionsNav.js"],
       "run_at": "document_end"
     }
   ]
