@@ -10,5 +10,14 @@
       "js": ["src/addReactionsNav.js"],
       "run_at": "document_end"
     }
-  ]
+  ],
+  "icons": {
+    "16": "src/assets/icons/icon_16.png",
+    "48": "src/assets/icons/icon_48.png",
+    "128": "src/assets/icons/icon_128.png"
+  },
+  "browser_action": {
+    "default_icon": "src/assets/icons/icon_48.png",
+    "default_title": "Github Issue Reactions"
+  }
 }
