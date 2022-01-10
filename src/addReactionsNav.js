@@ -110,7 +110,7 @@ function Credits() {
 
   const extensionLink = document.createElement('a')
   extensionLink.href =
-    'https://github.com/NorfeldtAbtion/github-issue-reactions-browser-extension'
+    'https://github.com/Norfeldt/github-issue-reactions-browser-extension'
   extensionLink.appendChild(document.createTextNode('Reactions Extension'))
 
   const madeBySpan = document.createElement('span')
