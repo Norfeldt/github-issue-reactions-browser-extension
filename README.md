@@ -7,7 +7,7 @@ List a link of reactions on a Github issue page
 
 ### Web Store
 
-Grab it from the chrome web store https://chrome.google.com/webstore/detail/github-issue-reactions/enekincdenmmbpgkbhflknhaphpajnfd
+Grab it from the chrome web store: [Github Issue Reactions](https://chrome.google.com/webstore/detail/github-issue-reactions/enekincdenmmbpgkbhflknhaphpajnfd)
 
 ### Manual Setup
 
