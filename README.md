@@ -3,7 +3,13 @@ List a link of reactions on a Github issue page
 
 ![Example screenshot](example.png)
 
-## Chrome Setup
+## Chrome 
+
+### Web Store
+
+Grab it from the chrome web store https://chrome.google.com/webstore/detail/github-issue-reactions/enekincdenmmbpgkbhflknhaphpajnfd
+
+### Manual Setup
 
 1. Clone this repo
 2. Open Chrome Extensions
