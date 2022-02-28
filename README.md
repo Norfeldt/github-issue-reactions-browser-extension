@@ -29,12 +29,6 @@ Grab it from the chrome web store: [Github Issue Reactions](https://chrome.googl
 
 ## Not Working Any More?
 
-Try to do a git pull to see if it has been fixed (**DO NOT FORGET go into your extensions and reload the lasted version**).
+Try to do a git pull to see if it has been fixed 
 
----
-
-## Why is it not on the Chrome Web Store?
-
-In the future it might come, but for now it's just easier to distribute it this way.
-
-Another good reason would be that it is more secure to inspect and control an extensions that injects code into your Github (both private and public pages).
+(**DO NOT FORGET go into your extensions and reload the lasted version**).
