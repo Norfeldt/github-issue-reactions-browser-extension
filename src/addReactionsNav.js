@@ -68,7 +68,7 @@ function Reactions() {
     .forEach((reactionSection) => {
       let reactions = ''
       reactionSection
-        .querySelectorAll('button.social-reaction-summary-item')
+        .querySelectorAll('button[class*="reaction"]')
         .forEach((btn) => {
           reactions += btn.textContent.replace(/\s+/g, '') + ' '
         })
