@@ -3,7 +3,7 @@ header.style = 'position: relative; height: 100%;'
 
 let wrapper = getWrapper()
 
-addReactionNav(wrapper)
+header && addReactionNav(wrapper)
 
 // Select the node that will be observed for mutations.
 const targetNode = document.querySelector('body')
@@ -31,7 +31,6 @@ observer.observe(targetNode, config)
 
 // Create a sticking wrapper to place all reactions
 function getWrapper() {
-  const header = document.querySelector('#partial-discussion-sidebar')
   const wrapper = header.appendChild(document.createElement('div'))
   const top =
     document.querySelectorAll('.gh-header-sticky').length > 0 ? 70 : 10
