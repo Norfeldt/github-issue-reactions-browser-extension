@@ -6,7 +6,7 @@
   "host_permissions": ["https://www.github.com/", "http://www.github.com/"],
   "content_scripts": [
     {
-      "matches": ["*://*.github.com/*/issues/*", "*://*.github.com/*/pull/*"],
+      "matches": ["*://*.github.com/*"],
       "js": ["src/addReactionsNav.js"],
       "run_at": "document_end"
     }

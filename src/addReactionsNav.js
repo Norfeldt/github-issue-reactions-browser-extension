@@ -1,47 +1,65 @@
-const header = document.querySelector('#partial-discussion-sidebar')
-header.style = 'position: relative; height: 100%;'
+const [sideBarId, wrapperId] = [
+  '#partial-discussion-sidebar',
+  '#reactions-wrapper',
+]
 
-let wrapper = getWrapper()
-
-header && addReactionNav(wrapper)
-
-// Select the node that will be observed for mutations.
-const targetNode = document.querySelector('body')
-
-// Options for the observer (which mutations to observe).
-const config = {
-  childList: true,
-  subtree: true,
+function debounce(func, timeout = 2000) {
+  let timer
+  return (...args) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, timeout)
+  }
 }
 
-// Create an observer instance linked to the callback function.
-const observer = new MutationObserver((mutations) => {
-  if (
-    !targetNode.contains(wrapper) ||
-    mutations.some((mutation) => mutation.target.matches('.js-timeline-item'))
-  ) {
-    wrapper.remove()
-    wrapper = getWrapper()
+// CHANGE PAGE
+const bodyObserver = new MutationObserver((mutations) => {
+  debounce(() => {
+    startObservingComments()
     addReactionNav()
-  }
+  })()
 })
+bodyObserver.observe(document.body, { childList: true, subtree: false })
 
-// Start observing the target node for configured mutations.
-observer.observe(targetNode, config)
+function startObservingComments() {
+  const commentSection = document.querySelector('.Layout-main')
+  if (!commentSection) return
+
+  const commentsObserver = new MutationObserver((mutations) => {
+    debounce(() => {
+      addReactionNav()
+    })()
+  })
+
+  commentsObserver.observe(commentSection, { childList: true, subtree: true })
+}
 
 // Create a sticking wrapper to place all reactions
-function getWrapper() {
-  const wrapper = header.appendChild(document.createElement('div'))
+function injectWrapper() {
+  const header = document.querySelector(sideBarId)
+  if (!header) return
+  header.style = 'position: relative; height: 100%;'
+
+  const wrapper = document.createElement('div')
+  wrapper.setAttribute('id', wrapperId.replace('#', ''))
   const top =
     document.querySelectorAll('.gh-header-sticky').length > 0 ? 70 : 10
-
   wrapper.style =
     'position: sticky; position: -webkit-sticky; top: ' + top + 'px;'
-  return wrapper
+
+  header.appendChild(wrapper)
 }
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
+  document.querySelector(wrapperId)?.remove()
+  injectWrapper()
+  const wrapper = document.querySelector(wrapperId)
+  if (!wrapper) {
+    return
+  }
+
   wrapper.innerHTML = ''
   wrapper.appendChild(Title())
   wrapper.appendChild(Reactions())
@@ -52,15 +70,14 @@ function Title() {
   const title = document.createElement('div')
   title.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
   title.appendChild(document.createTextNode('Reactions'))
+
   return title
 }
 
 function Reactions() {
   const all = document.createElement('div')
-
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
-
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
   document
     .querySelectorAll('.comment-reactions-options')
