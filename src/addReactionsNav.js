@@ -23,7 +23,9 @@ const bodyObserver = new MutationObserver((mutations) => {
 bodyObserver.observe(document.body, { childList: true, subtree: false })
 
 function startObservingComments() {
-  const commentSection = document.querySelector('.Layout-main')
+  const commentSection =
+    document.querySelector('.Layout-main') ?? // Issues & PR
+    document.querySelector('.js-discussion-quote-selection') // Discussion
   if (!commentSection) return
 
   const commentsObserver = new MutationObserver((mutations) => {
