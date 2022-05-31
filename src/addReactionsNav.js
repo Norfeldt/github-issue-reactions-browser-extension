@@ -63,17 +63,21 @@ function addReactionNav() {
   }
 
   wrapper.innerHTML = ''
-  wrapper.appendChild(Title())
+  wrapper.appendChild(Title('Reactions'))
   wrapper.appendChild(Reactions())
+  if (window.location.pathname.match(/\/discussions\//)) {
+    wrapper.appendChild(Title('Discussion Votes'))
+    wrapper.appendChild(DiscussionVotes())
+  }
   wrapper.appendChild(Credits())
 }
 
-function Title() {
-  const title = document.createElement('div')
-  title.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
-  title.appendChild(document.createTextNode('Reactions'))
+function Title(title) {
+  const element = document.createElement('div')
+  element.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
+  element.appendChild(document.createTextNode(title))
 
-  return title
+  return element
 }
 
 function Reactions() {
@@ -113,6 +117,35 @@ function Reactions() {
 
       all.appendChild(a)
     })
+  return all
+}
+
+function DiscussionVotes() {
+  const all = document.createElement('div')
+  document.querySelectorAll('[data-url]').forEach((discussionComment) => {
+    const vote = discussionComment.querySelector('.js-default-vote-count')
+    let url = discussionComment.dataset.url.replace(
+      '/comments/',
+      '#discussioncomment-'
+    )
+    if (url.match(/body$/)) {
+      url = `${
+        window.location.origin +
+        window.location.pathname +
+        window.location.search
+      }#${discussionComment.children[0].id}`
+    }
+
+    if (!vote || url.match(/votes$/)) return
+    const votes = vote.textContent
+    const a = document.createElement('a')
+    const linkText = document.createTextNode('\n⬆️ ' + votes)
+    a.appendChild(linkText)
+    a.title = url
+    a.href = url
+    a.style = 'display: block;'
+    all.appendChild(a)
+  })
 
   return all
 }
