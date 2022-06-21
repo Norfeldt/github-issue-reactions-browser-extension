@@ -85,38 +85,40 @@ function Reactions() {
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  document
-    .querySelectorAll('.comment-reactions-options')
-    .forEach((reactionSection) => {
-      let reactions = ''
-      reactionSection
-        .querySelectorAll('button[class*="reaction"]')
-        .forEach((btn) => {
-          reactions += btn.textContent.replace(/\s+/g, '') + ' '
-        })
-      const a = document.createElement('a')
-      const linkText = document.createTextNode('\n' + reactions)
-      a.appendChild(linkText)
-      a.title = reactions
+  document.querySelectorAll('.comment-reactions').forEach((reactionSection) => {
+    let reactions = ''
+    reactionSection
+      .querySelectorAll('button[class*="reaction"]')
+      .forEach((btn) => {
+        const { textContent } = btn
+        if (textContent.match(/\d/g)) {
+          reactions += textContent.replace(/\s+/g, '') + ' '
+        }
+      })
+    const a = document.createElement('a')
 
-      let id = null
-      while (id == null || node != null) {
-        if (reactionSection.tagName === 'A' && reactionSection.name) {
-          id = reactionSection.name
-          break
-        }
-        if (reactionSection.id) {
-          id = reactionSection.id
-          break
-        }
-        reactionSection = reactionSection.parentNode
+    const linkText = document.createTextNode('\n' + reactions)
+    a.appendChild(linkText)
+    a.title = reactions
+
+    let id = null
+    while (id == null || node != null) {
+      if (reactionSection.tagName === 'A' && reactionSection.name) {
+        id = reactionSection.name
+        break
       }
+      if (reactionSection.id) {
+        id = reactionSection.id
+        break
+      }
+      reactionSection = reactionSection.parentNode
+    }
 
-      a.href = issueUrl + '#' + id
-      a.style = 'display: block;'
+    a.href = issueUrl + '#' + id
+    a.style = 'display: block;'
 
-      all.appendChild(a)
-    })
+    all.appendChild(a)
+  })
   return all
 }
 
