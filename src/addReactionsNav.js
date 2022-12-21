@@ -100,7 +100,6 @@ function Reactions() {
   document
     .querySelectorAll('.js-comment-reactions-options')
     .forEach((reactionSection) => {
-      console.log('hi mom')
       let reactions = ''
       reactionSection
         .querySelectorAll('button[class*="reaction"]')
