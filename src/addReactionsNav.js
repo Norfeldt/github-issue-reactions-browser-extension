@@ -1,3 +1,5 @@
+// console.log('running github issue reactions', Math.random())
+
 const [sideBarId, wrapperId] = [
   '#partial-discussion-sidebar',
   '#reactions-wrapper',
@@ -14,15 +16,21 @@ function debounce(func, timeout = 2000) {
 }
 
 // CHANGE PAGE
-const bodyObserver = new MutationObserver((mutations) => {
+const mainObserver = new MutationObserver((mutations) => {
+  // console.log('mainObserver')
   debounce(() => {
     startObservingComments()
     addReactionNav()
   })()
 })
-bodyObserver.observe(document.body, { childList: true, subtree: false })
+
+mainObserver.observe(document.querySelector('.Layout-main'), {
+  childList: true,
+  subtree: true,
+})
 
 function startObservingComments() {
+  // console.log('startObservingComments')
   const commentSection =
     document.querySelector('.Layout-main') ?? // Issues & PR
     document.querySelector('.js-discussion-quote-selection') // Discussion
@@ -39,6 +47,7 @@ function startObservingComments() {
 
 // Create a sticking wrapper to place all reactions
 function injectWrapper() {
+  // console.log('injectWrapper')
   const header = document.querySelector(sideBarId)
   if (!header) return
   header.style = 'position: relative; height: 100%;'
@@ -55,6 +64,7 @@ function injectWrapper() {
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
+  // console.log('addReactionNav')
   document.querySelector(wrapperId)?.remove()
   injectWrapper()
   const wrapper = document.querySelector(wrapperId)
@@ -73,6 +83,7 @@ function addReactionNav() {
 }
 
 function Title(title) {
+  // console.log('Title')
   const element = document.createElement('div')
   element.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
   element.appendChild(document.createTextNode(title))
@@ -81,48 +92,53 @@ function Title(title) {
 }
 
 function Reactions() {
+  // console.log('Reactions')
   const all = document.createElement('div')
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  document.querySelectorAll('.comment-reactions').forEach((reactionSection) => {
-    let reactions = ''
-    reactionSection
-      .querySelectorAll('button[class*="reaction"]')
-      .forEach((btn) => {
-        const { textContent } = btn
-        if (textContent.match(/\d/g)) {
-          reactions += textContent.replace(/\s+/g, '') + ' '
+  document
+    .querySelectorAll('.js-comment-reactions-options')
+    .forEach((reactionSection) => {
+      console.log('hi mom')
+      let reactions = ''
+      reactionSection
+        .querySelectorAll('button[class*="reaction"]')
+        .forEach((btn) => {
+          const { textContent } = btn
+          if (textContent.match(/\d/g)) {
+            reactions += textContent.replace(/\s+/g, '') + ' '
+          }
+        })
+      const a = document.createElement('a')
+
+      const linkText = document.createTextNode('\n' + reactions)
+      a.appendChild(linkText)
+      a.title = reactions
+
+      let id = null
+      while (id == null || node != null) {
+        if (reactionSection.tagName === 'A' && reactionSection.name) {
+          id = reactionSection.name
+          break
         }
-      })
-    const a = document.createElement('a')
-
-    const linkText = document.createTextNode('\n' + reactions)
-    a.appendChild(linkText)
-    a.title = reactions
-
-    let id = null
-    while (id == null || node != null) {
-      if (reactionSection.tagName === 'A' && reactionSection.name) {
-        id = reactionSection.name
-        break
+        if (reactionSection.id) {
+          id = reactionSection.id
+          break
+        }
+        reactionSection = reactionSection.parentNode
       }
-      if (reactionSection.id) {
-        id = reactionSection.id
-        break
-      }
-      reactionSection = reactionSection.parentNode
-    }
 
-    a.href = issueUrl + '#' + id
-    a.style = 'display: block;'
+      a.href = issueUrl + '#' + id
+      a.style = 'display: block;'
 
-    all.appendChild(a)
-  })
+      all.appendChild(a)
+    })
   return all
 }
 
 function DiscussionVotes() {
+  // console.log('DiscussionVotes')
   const all = document.createElement('div')
   document.querySelectorAll('[data-url]').forEach((discussionComment) => {
     const vote = discussionComment.querySelector('.js-default-vote-count')
@@ -153,6 +169,7 @@ function DiscussionVotes() {
 }
 
 function Credits() {
+  // console.log('Credits')
   const credits = document.createElement('div')
   credits.style =
     'display: flex; align-items: center; margin: 1rem 0; font-size: 0.8rem; color: #777;'
