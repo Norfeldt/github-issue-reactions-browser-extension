@@ -1,4 +1,4 @@
-// console.log('running github issue reactions', Math.random())
+console.log('running github issue reactions', Math.random())
 
 const [sideBarId, wrapperId] = [
   '#partial-discussion-sidebar',

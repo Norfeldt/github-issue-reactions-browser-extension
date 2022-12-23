@@ -1,0 +1,18 @@
+{
+  "name": "github-issue-reactions-browser-extension",
+  "version": "2.0.0",
+  "repository": "git@github.com:Norfeldt/github-issue-reactions-browser-extension.git",
+  "author": "Lasse Nørfeldt <lasse@norfeldt.com>",
+  "license": "MIT",
+  "scripts": {
+    "bundle": "ts-node bundle.ts",
+    "zip": "ts-node bundle.ts --args zip"
+  },
+  "devDependencies": {
+    "@types/archiver": "^5.3.1",
+    "@types/node": "^18.11.17",
+    "archiver": "^5.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}

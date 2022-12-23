@@ -12,20 +12,18 @@ Grab it from the chrome web store: [Github Issue Reactions](https://chrome.googl
 ### Manual Setup
 
 1. Clone this repo
-2. Open Chrome Extensions
-3. Enable Developer mode
-4. Pick Load unpacked and pick the cloned repo
-6. Enjoy! 👍
-
-
-## Firefox Setup
-
-1. Clone this repo
-2. Go to "about:debugging"
-3. Click "This Firefox"
-4. Click "Load Temporary Add-On"
-5. Select the `github_issue_reactions.js` file from this repo
-6. Enjoy! 👍
+2. `yarn install`
+3. `yarn bundle` 
+4. Chrome:
+   1. Open Chrome Extensions
+   2. Enable Developer mode
+   3. Pick Load unpacked
+5. Firefox:
+   1. Settings/Extension & Themes
+   2. Click the gear icon and select "Debug add-ons"
+   3. Load Temporary Add-on..
+6. Navigate to the relevant `/dist` directory
+7. Enjoy! 👍
 
 ## Not Working Any More?
 

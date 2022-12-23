@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "CommonJS",
+    "strict": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src", "scripts", "bundle.ts"],
+  "exclude": ["node_modules", "dist", "scripts"]
+}

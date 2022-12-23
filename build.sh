@@ -1,1 +1,0 @@
-zip "build_$(jq -r .version manifest.json).zip" src/*.js src/assets/icons/*.png *.json
