@@ -9,7 +9,11 @@ List reaction links on a Github issue or discussion page
 
 Grab it from the chrome web store: [Github Issue Reactions](https://chrome.google.com/webstore/detail/github-issue-reactions/enekincdenmmbpgkbhflknhaphpajnfd)
 
-### Manual Setup
+## Firefox
+
+Grab it from the firefox web store: [Github Issue Reactions](https://addons.mozilla.org/addon/github-issue-reactions/)
+
+## Manual Setup
 
 1. Clone this repo
 2. `yarn install`
