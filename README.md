@@ -1,5 +1,5 @@
 # Github Issue Reactions Chrome & Firefox Extension
-List a link of reactions on a Github issue page
+List reaction links on a Github issue or discussion page
 
 ![Example screenshot](example.png)
 
