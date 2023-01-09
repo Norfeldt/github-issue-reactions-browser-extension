@@ -94,7 +94,7 @@ function Title(title) {
 function Reactions() {
   // console.log('Reactions')
   const all = document.createElement('div')
-  all.style = `display: flex; flex-wrap: wrap;`
+  all.style = `display: flex; flex-wrap: wrap; gap: 5px;`
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
