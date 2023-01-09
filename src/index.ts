@@ -98,8 +98,10 @@ function Reactions() {
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  document
-    .querySelectorAll('.js-comment-reactions-options')
+  const reactions = ['👍', '🚀', '🎉', '😄', '❤️', '😕', '👎', '👀'];
+  Array.from(document
+    .querySelectorAll('.js-comment-reactions-options'))
+    .filter(node => reactions.some(reaction => node.textContent?.includes(reaction)))
     .forEach((reactionSection) => {
       let reactions = ''
       reactionSection
