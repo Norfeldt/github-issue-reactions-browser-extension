@@ -130,7 +130,7 @@ function Reactions() {
       }
 
       a.href = issueUrl + '#' + id
-      a.style = 'display: block;'
+      a.style = 'border: 1px solid var(--color-border-default, #d2dff0); border-radius: 100px; padding: 2px 7px; display: inline-block; color: var(--color-fg-muted);'
 
       all.appendChild(a)
     })
