@@ -5,11 +5,12 @@ const [sideBarId, wrapperId] = [
   '#reactions-wrapper',
 ]
 
-function debounce(func, timeout = 2000) {
-  let timer
-  return (...args) => {
+function debounce(func: Function, timeout = 2000): Function {
+  let timer: ReturnType<typeof setTimeout>
+  return (...args: any[]) => {
     clearTimeout(timer)
     timer = setTimeout(() => {
+      // @ts-expect-error
       func.apply(this, args)
     }, timeout)
   }
@@ -24,10 +25,13 @@ const mainObserver = new MutationObserver((mutations) => {
   })()
 })
 
-mainObserver.observe(document.querySelector('.Layout-main'), {
-  childList: true,
-  subtree: true,
-})
+const layoutMain = document.querySelector('.Layout-main')
+if (layoutMain !== null) {
+  mainObserver.observe(layoutMain, {
+    childList: true,
+    subtree: true,
+  })
+}
 
 function startObservingComments() {
   // console.log('startObservingComments')
@@ -48,16 +52,18 @@ function startObservingComments() {
 // Create a sticking wrapper to place all reactions
 function injectWrapper() {
   // console.log('injectWrapper')
-  const header = document.querySelector(sideBarId)
+  const header = document.querySelector(sideBarId) as HTMLDivElement
   if (!header) return
-  header.style = 'position: relative; height: 100%;'
+  header.style.position = 'relative'
+  header.style.height = '100%'
 
   const wrapper = document.createElement('div')
   wrapper.setAttribute('id', wrapperId.replace('#', ''))
   const top =
     document.querySelectorAll('.gh-header-sticky').length > 0 ? 70 : 10
-  wrapper.style =
-    'position: sticky; position: -webkit-sticky; top: ' + top + 'px;'
+  wrapper.style.position = 'sticky'
+  wrapper.style.setProperty('position', '-webkit-sticky', 'important')
+  wrapper.style.top = top + 'px'
 
   header.appendChild(wrapper)
 }
@@ -82,10 +88,11 @@ function addReactionNav() {
   wrapper.appendChild(Credits())
 }
 
-function Title(title) {
+function Title(title: string) {
   // console.log('Title')
   const element = document.createElement('div')
-  element.style = 'font-weight: bold; margin: 1.25rem 0 0.5rem 0;'
+  element.style.setProperty('font-weight', 'bold')
+  element.style.setProperty('margin', '1.25rem 0 0.5rem 0')
   element.appendChild(document.createTextNode(title))
 
   return element
@@ -94,29 +101,34 @@ function Title(title) {
 function Reactions() {
   // console.log('Reactions')
   const all = document.createElement('div')
+
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  document
-    .querySelectorAll('.js-comment-reactions-options')
+  const reactions = ['👍', '🚀', '🎉', '😄', '❤️', '😕', '👎', '👀']
+  Array.from(document.querySelectorAll('.js-comment-reactions-options'))
+    .filter((node) =>
+      reactions.some((reaction) => node.textContent?.includes(reaction))
+    )
     .forEach((reactionSection) => {
       let reactions = ''
       reactionSection
         .querySelectorAll('button[class*="reaction"]')
         .forEach((btn) => {
           const { textContent } = btn
-          if (textContent.match(/\d/g)) {
+          if (textContent?.match(/\d/g)) {
             reactions += textContent.replace(/\s+/g, '') + ' '
           }
         })
+      const linkContainer = document.createElement('div')
       const a = document.createElement('a')
-
-      const linkText = document.createTextNode('\n' + reactions)
+      const linkText = document.createTextNode('  ' + reactions)
+      linkContainer.appendChild(a)
       a.appendChild(linkText)
       a.title = reactions
 
       let id = null
-      while (id == null || node != null) {
+      while (id == null) {
         if (reactionSection.tagName === 'A' && reactionSection.name) {
           id = reactionSection.name
           break
@@ -125,26 +137,34 @@ function Reactions() {
           id = reactionSection.id
           break
         }
+        // @ts-expect-error
         reactionSection = reactionSection.parentNode
       }
 
+      linkContainer.style.margin = '0.5rem 0'
       a.href = issueUrl + '#' + id
-      a.style = 'display: block;'
+      a.style.border = '1px solid var(--color-border-default, #d2dff0)'
+      a.style.borderRadius = '100px'
+      a.style.padding = '2px 7px'
+      a.style.color = 'var(--color-fg-muted)'
 
-      all.appendChild(a)
+      all.appendChild(linkContainer)
     })
   return all
 }
 
 function DiscussionVotes() {
   // console.log('DiscussionVotes')
+
   const all = document.createElement('div')
   document.querySelectorAll('[data-url]').forEach((discussionComment) => {
     const vote = discussionComment.querySelector('.js-default-vote-count')
-    let url = discussionComment.dataset.url.replace(
+    let url = discussionComment.dataset?.url?.replace(
       '/comments/',
       '#discussioncomment-'
     )
+    if (!url) return
+
     if (url.match(/body$/)) {
       url = `${
         window.location.origin +
@@ -160,7 +180,7 @@ function DiscussionVotes() {
     a.appendChild(linkText)
     a.title = url
     a.href = url
-    a.style = 'display: block;'
+    a.style.display = 'block;'
     all.appendChild(a)
   })
 
@@ -170,11 +190,14 @@ function DiscussionVotes() {
 function Credits() {
   // console.log('Credits')
   const credits = document.createElement('div')
-  credits.style =
-    'display: flex; align-items: center; margin: 1rem 0; font-size: 0.8rem; color: #777;'
+  credits.style.display = 'flex'
+  credits.style.alignItems = 'center'
+  credits.style.margin = '1rem 0'
+  credits.style.fontSize = '0.8rem'
+  credits.style.color = '#777'
 
   const laptopEmojiSpan = document.createElement('span')
-  laptopEmojiSpan.style = 'margin-right: 0.25rem;'
+  laptopEmojiSpan.style.marginRight = '0.25rem;'
   laptopEmojiSpan.appendChild(document.createTextNode('💻  '))
 
   const extensionLink = document.createElement('a')
@@ -183,7 +206,7 @@ function Credits() {
   extensionLink.appendChild(document.createTextNode('Reactions Extension'))
 
   const madeBySpan = document.createElement('span')
-  madeBySpan.style = 'margin: 0 0.25rem;'
+  madeBySpan.style.margin = '0 0.25rem;'
   madeBySpan.appendChild(document.createTextNode('made by'))
 
   const authorLink = document.createElement('a')
@@ -196,4 +219,9 @@ function Credits() {
   credits.appendChild(authorLink)
 
   return credits
+}
+
+declare interface Element {
+  dataset: DOMStringMap
+  name: string
 }
