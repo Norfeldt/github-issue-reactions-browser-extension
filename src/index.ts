@@ -16,6 +16,9 @@ function debounce(func: Function, timeout = 2000): Function {
   }
 }
 
+// INITIAL LOADING INDICATOR
+injectWrapper({ withLoadingSpinner: true })
+
 // CHANGE PAGE
 const mainObserver = new MutationObserver((mutations) => {
   // console.log('mainObserver')
@@ -50,8 +53,8 @@ function startObservingComments() {
 }
 
 // Create a sticking wrapper to place all reactions
-function injectWrapper() {
-  // console.log('injectWrapper')
+function injectWrapper({ withLoadingSpinner } = { withLoadingSpinner: false }) {
+  console.log('injectWrapper')
   const header = document.querySelector(sideBarId) as HTMLDivElement
   if (!header) return
   header.style.position = 'relative'
@@ -64,8 +67,34 @@ function injectWrapper() {
   wrapper.style.position = 'sticky'
   wrapper.style.setProperty('position', '-webkit-sticky', 'important')
   wrapper.style.top = top + 'px'
+  wrapper.innerHTML = ''
+  wrapper.appendChild(Title('Reactions'))
+
+  if (withLoadingSpinner) {
+    wrapper.appendChild(LoadingSpinner())
+  }
 
   header.appendChild(wrapper)
+}
+
+function LoadingSpinner() {
+  const loadingSpinner = document.createElement('div')
+  loadingSpinner.style.width = '50px'
+  loadingSpinner.style.height = '50px'
+  loadingSpinner.style.border = '2px solid #f3f3f3'
+  loadingSpinner.style.borderTop = '2px solid #3498db'
+  loadingSpinner.style.borderRadius = '50%'
+  loadingSpinner.style.animation = 'spin 1s linear infinite'
+  const style = document.createElement('style')
+  document.head.appendChild(style)
+  const keyframes = `
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }`
+  style.sheet?.insertRule(keyframes)
+
+  return loadingSpinner
 }
 
 // Scan the site for reactions and stick it into the wrapper
@@ -78,8 +107,6 @@ function addReactionNav() {
     return
   }
 
-  wrapper.innerHTML = ''
-  wrapper.appendChild(Title('Reactions'))
   wrapper.appendChild(Reactions())
   if (window.location.pathname.match(/\/discussions\//)) {
     wrapper.appendChild(Title('Discussion Votes'))
