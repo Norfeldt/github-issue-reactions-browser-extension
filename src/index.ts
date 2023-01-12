@@ -191,14 +191,14 @@ function Credits() {
   // console.log('Credits')
   const credits = document.createElement('div')
   credits.style.display = 'flex'
+  credits.style.gap = '0.5rem'
   credits.style.alignItems = 'center'
   credits.style.margin = '1rem 0'
   credits.style.fontSize = '0.8rem'
   credits.style.color = '#777'
 
   const laptopEmojiSpan = document.createElement('span')
-  laptopEmojiSpan.style.marginRight = '0.25rem;'
-  laptopEmojiSpan.appendChild(document.createTextNode('💻  '))
+  laptopEmojiSpan.appendChild(document.createTextNode('💻'))
 
   const extensionLink = document.createElement('a')
   extensionLink.href =
@@ -206,8 +206,7 @@ function Credits() {
   extensionLink.appendChild(document.createTextNode('Reactions Extension'))
 
   const madeBySpan = document.createElement('span')
-  madeBySpan.style.margin = '0 0.25rem;'
-  madeBySpan.appendChild(document.createTextNode('made by'))
+  madeBySpan.appendChild(document.createTextNode(' by '))
 
   const authorLink = document.createElement('a')
   authorLink.href = 'https://github.com/Norfeldt'
