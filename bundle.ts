@@ -5,6 +5,8 @@ import * as archiver from 'archiver'
 
 import { version } from './package.json'
 
+console.log('Bundling started')
+
 type Browser = 'chrome' | 'firefox'
 
 const writeToDist = (browser: Browser, fileName: string, content: any) =>
@@ -23,6 +25,7 @@ const commonManifest = {
       run_at: 'document_end',
     },
   ],
+  permissions: ['storage'],
   icons: {
     '16': 'icon_16.png',
     '48': 'icon_48.png',
@@ -32,16 +35,27 @@ const commonManifest = {
   host_permissions: ['https://www.github.com/', 'http://www.github.com/'],
 }
 
+// CHROME
 const chromeManifest = {
   manifest_version: 3,
   ...commonManifest,
 }
 writeToDist('chrome', 'manifest.json', JSON.stringify(chromeManifest, null, 2))
 
+// FIREFOX
 const { host_permissions, ...firefoxManifest } = {
   manifest_version: 2,
   ...commonManifest,
-  permissions: commonManifest.host_permissions,
+  permissions: [
+    ...commonManifest.host_permissions,
+    ...commonManifest.permissions,
+  ],
+  browser_specific_settings: {
+    gecko: {
+      id: 'github-issue-reactions-browser-extension@norfeldt',
+      strict_min_version: '57.0a1',
+    },
+  },
 }
 writeToDist(
   'firefox',
@@ -60,9 +74,17 @@ for (const iconFile of iconFiles) {
 }
 
 // CONTENT SCRIPT
+const tscCommand = (browser: Browser) => {
+  const command = `yarn tsc src/index.ts --outDir dist/${browser}`
+  console.log(command)
+
+  return command
+}
+child_process.exec(tscCommand('chrome'), () => callBack('chrome'))
+child_process.exec(tscCommand('firefox'), () => callBack('firefox'))
 
 // If it should z(h)ip it when done
-const callBack = (browser: Browser) => {
+function callBack(browser: Browser) {
   if (process.argv.includes('zip')) {
     const archive = archiver('zip', {
       zlib: { level: 9 },
@@ -76,7 +98,10 @@ const callBack = (browser: Browser) => {
   }
 }
 
-const tscCommand = (browser: Browser) =>
-  `yarn tsc --outDir dist/${browser} src/index.ts`
-child_process.exec(tscCommand('chrome'), () => callBack('chrome'))
-child_process.exec(tscCommand('firefox'), () => callBack('firefox'))
+setTimeout(() => {
+  const timeStampWithoutMs = new Date()
+    .toISOString()
+    .split('.')[0]
+    .replace('T', ' ')
+  console.log('Bundling finished', timeStampWithoutMs)
+}, 5000)
