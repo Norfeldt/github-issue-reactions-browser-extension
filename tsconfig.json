@@ -3,7 +3,8 @@
     "target": "es6",
     "module": "CommonJS",
     "strict": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["chrome", "firefox-webext-browser"]
   },
   "include": ["src", "scripts", "bundle.ts"],
   "exclude": ["node_modules", "dist", "scripts"]
