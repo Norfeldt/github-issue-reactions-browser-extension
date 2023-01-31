@@ -1,7 +1,11 @@
 # Github Issue Reactions Chrome & Firefox Extension
 List reaction links on a Github issue or discussion page
 
-![Example screenshot](example.png)
+<img src="example.png" alt="screenshot example" width="400">
+
+See it in action
+
+[![Wes Bos Showing off this extension](http://img.youtube.com/vi/K4wc818iNDc/0.jpg)](http://www.youtube.com/watch?v=K4wc818iNDc "Video Title")
 
 ## Chrome 
 
