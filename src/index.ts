@@ -28,25 +28,30 @@ function debounce(func: Function, timeout = 2000): Function {
 injectWrapper({ withLoadingSpinner: true })
 
 // CHANGE PAGE
-const mainObserver = new MutationObserver((mutations) => {
+const mainObserver = new MutationObserver((_mutations) => {
   debounce(() => {
     startObservingComments()
     addReactionNav()
   })()
 })
 
-const layoutMain = document.querySelector('.Layout-main')
-if (layoutMain !== null) {
-  mainObserver.observe(layoutMain, {
+function getCommentSection() {
+  return (
+    document.querySelector('.Layout-main') ?? // Issues & PR
+    document.querySelector('.js-discussion-quote-selection') // Discussion
+  )
+}
+
+const commentSection = getCommentSection()
+if (commentSection !== null) {
+  mainObserver.observe(commentSection, {
     childList: true,
     subtree: true,
   })
 }
 
 function startObservingComments() {
-  const commentSection =
-    document.querySelector('.Layout-main') ?? // Issues & PR
-    document.querySelector('.js-discussion-quote-selection') // Discussion
+  const commentSection = getCommentSection()
   if (!commentSection) return
 
   const commentsObserver = new MutationObserver((mutations) => {
