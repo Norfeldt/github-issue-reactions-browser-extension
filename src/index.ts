@@ -208,6 +208,12 @@ function Reactions() {
       }
     })
 
+  if (all.childElementCount === 0) {
+    const noReactions = document.createElement('div')
+    noReactions.innerText = '🤷‍♂️ no reactions found'
+    all.appendChild(noReactions)
+  }
+
   return all
 }
 
