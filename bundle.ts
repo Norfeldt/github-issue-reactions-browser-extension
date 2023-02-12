@@ -52,7 +52,7 @@ const { host_permissions, ...firefoxManifest } = {
   ],
   browser_specific_settings: {
     gecko: {
-      id: 'f6ec3962-fd1d-4a7b-8dab-d211fbf91389',
+      id: '{f6ec3962-fd1d-4a7b-8dab-d211fbf91389}',
       strict_min_version: '57.0a1',
     },
   },
