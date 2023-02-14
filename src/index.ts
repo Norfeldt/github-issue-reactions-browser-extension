@@ -13,60 +13,14 @@ const [sideBarId, wrapperId] = [
   '#reactions-wrapper',
 ]
 
-function debounce(func: Function, timeout = 2000): Function {
-  let timer: ReturnType<typeof setTimeout>
-  return (...args: any[]) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      // @ts-ignore
-      func.apply(this, args)
-    }, timeout)
-  }
-}
-
 // INITIAL LOADING INDICATOR
 injectWrapper({ withLoadingSpinner: true })
-
-// CHANGE PAGE
-const mainObserver = new MutationObserver((_mutations) => {
-  debounce(() => {
-    startObservingComments()
-    addReactionNav()
-  })()
-})
-
-function getCommentSection() {
-  return (
-    document.querySelector('.Layout-main') ?? // Issues & PR
-    document.querySelector('.js-discussion-quote-selection') // Discussion
-  )
-}
-
-const commentSection = getCommentSection()
-if (commentSection !== null) {
-  mainObserver.observe(commentSection, {
-    childList: true,
-    subtree: true,
-  })
-}
-
-function startObservingComments() {
-  const commentSection = getCommentSection()
-  if (!commentSection) return
-
-  const commentsObserver = new MutationObserver((mutations) => {
-    debounce(() => {
-      addReactionNav()
-    })()
-  })
-
-  commentsObserver.observe(commentSection, { childList: true, subtree: true })
-}
 
 // Create a sticking wrapper to place all reactions
 function injectWrapper({ withLoadingSpinner } = { withLoadingSpinner: false }) {
   const header = document.querySelector(sideBarId) as HTMLDivElement
   if (!header) return
+
   header.style.position = 'relative'
   header.style.height = '100%'
 
@@ -78,12 +32,11 @@ function injectWrapper({ withLoadingSpinner } = { withLoadingSpinner: false }) {
   wrapper.style.setProperty('position', '-webkit-sticky', 'important')
   wrapper.style.top = top + 'px'
   wrapper.innerHTML = ''
-  wrapper.appendChild(Title('Reactions'))
 
+  wrapper.appendChild(Title('Reactions'))
   if (withLoadingSpinner) {
     wrapper.appendChild(LoadingSpinner())
   }
-
   header.appendChild(wrapper)
 }
 
@@ -107,6 +60,45 @@ function LoadingSpinner() {
 
   return loadingSpinner
 }
+
+// OBSERVE FOR PAGE MUTATIONS
+function hasAncestorWithId(element: Element | null, id: string) {
+  while (element) {
+    if (element.id === id) {
+      return true
+    }
+    element = element.parentElement
+  }
+  return false
+}
+
+const observer = new MutationObserver((mutations: MutationRecord[]) => {
+  for (const mutation of mutations) {
+    if (
+      hasAncestorWithId(
+        mutation.target as Element | null,
+        sideBarId.replace('#', '')
+      ) ||
+      hasAncestorWithId(
+        mutation.target as Element | null,
+        wrapperId.replace('#', '')
+      )
+    ) {
+      continue
+    }
+
+    // Check if the URL contains /discussions/ or /issues/
+    if (/\/(discussions|issues)\//.test(window.location.pathname)) {
+      addReactionNav()
+    }
+  }
+})
+
+// Start observing mutations on the whole document
+observer.observe(document, {
+  childList: true,
+  subtree: true,
+})
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
@@ -331,8 +323,9 @@ function Switch() {
   }
 
   getBrowser()
-    .storage.sync.get([DISPLAY])
-    .then((result) => {
+    .storage.sync?.get([DISPLAY])
+    ?.then((result) => {
+      if (!result[DISPLAY]) return
       toggle(result[DISPLAY] === 'inline-block')
     })
 
