@@ -18,6 +18,46 @@ injectWrapper({ withLoadingSpinner: true })
 
 // Create a sticking wrapper to place all reactions
 function injectWrapper({ withLoadingSpinner } = { withLoadingSpinner: false }) {
+  if (document.querySelector('header')?.innerText.includes('Sign in')) {
+    const header = document.querySelector(sideBarId) as HTMLDivElement
+    if (header) {
+      const notSignedInClass = 'not-signed-in'
+      Array.from(document.querySelectorAll(`.${notSignedInClass}`)).forEach(
+        (element) => element?.remove()
+      )
+      const textHeader = document.createElement('div')
+      textHeader.className = notSignedInClass
+      textHeader.style.margin = '1.25rem 0 0.2rem 0'
+      textHeader.style.fontWeight = 'bold'
+      textHeader.appendChild(
+        document.createTextNode('Sign in to list reactions')
+      )
+      // add the text below "Github source code is different for signed out users and it is currently too much work to support both"
+      const textReason = document.createElement('div')
+      textReason.className = notSignedInClass
+      textReason.style.margin = '1.25rem 0 0.5rem 0'
+      textReason.style.fontStyle = 'italic'
+      textReason.appendChild(
+        document.createTextNode(
+          'Github source code is different for signed out users and it is currently too much work to support both - sorry! 🙈'
+        )
+      )
+      textReason.appendChild(
+        document.createTextNode(
+          'You are welcome to contribute to the project on Github 🙌'
+        )
+      )
+      header.appendChild(textHeader)
+      header.appendChild(textReason)
+
+      Array.from(document.querySelectorAll(`.credits`)).forEach((element) =>
+        element?.remove()
+      )
+      header.appendChild(Credits())
+    }
+    return
+  }
+
   const header = document.querySelector(sideBarId) as HTMLDivElement
   if (!header) return
 
@@ -265,6 +305,7 @@ function DiscussionVotes() {
 
 function Credits() {
   const credits = document.createElement('div')
+  credits.classList.add('credits')
   credits.style.display = 'flex'
   credits.style.gap = '0.5rem'
   credits.style.alignItems = 'center'
