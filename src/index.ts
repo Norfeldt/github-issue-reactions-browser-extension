@@ -33,7 +33,7 @@ function injectWrapper({ withLoadingSpinner } = { withLoadingSpinner: false }) {
   wrapper.style.top = top + 'px'
   wrapper.innerHTML = ''
 
-  wrapper.appendChild(Title('Reactions'))
+  wrapper.appendChild(Title('Reactions', true))
   if (withLoadingSpinner) {
     wrapper.appendChild(LoadingSpinner())
   }
@@ -117,7 +117,7 @@ function addReactionNav() {
   wrapper.appendChild(Credits())
 }
 
-function Title(title: string) {
+function Title(title: string, withSwitch = false) {
   const element = document.createElement('div') satisfies HTMLDivElement
   element.style.display = 'flex'
   element.style.justifyContent = 'space-between'
@@ -127,11 +127,13 @@ function Title(title: string) {
 
   element.appendChild(document.createTextNode(title))
 
-  const switchDiv = document.createElement('div')
-  switchDiv.appendChild(SvgBlockIcon())
-  switchDiv.appendChild(Switch())
-  switchDiv.appendChild(SvgInlineBlockIcon())
-  element.appendChild(switchDiv)
+  if (withSwitch) {
+    const switchDiv = document.createElement('div')
+    switchDiv.appendChild(SvgBlockIcon())
+    switchDiv.appendChild(Switch())
+    switchDiv.appendChild(SvgInlineBlockIcon())
+    element.appendChild(switchDiv)
+  }
 
   return element
 }
