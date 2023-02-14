@@ -9,8 +9,13 @@ console.log('Bundling started')
 
 type Browser = 'chrome' | 'firefox'
 
-const writeToDist = (browser: Browser, fileName: string, content: any) =>
-  fs.writeFileSync(path.join(__dirname, 'dist', browser, fileName), content)
+function writeToDist(browser: Browser, fileName: string, content: any) {
+  const dir = path.join(__dirname, 'dist', browser)
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+  fs.writeFileSync(path.join(dir, fileName), content)
+}
 
 // MANIFESTS
 const commonManifest = {
