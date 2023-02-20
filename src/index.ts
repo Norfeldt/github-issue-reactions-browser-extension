@@ -128,7 +128,7 @@ const observer = new MutationObserver((mutations: MutationRecord[]) => {
     }
 
     // Check if the URL contains /discussions/ or /issues/
-    if (/\/(discussions|issues)\//.test(window.location.pathname)) {
+    if (/\/(discussions|issues|pull)\//.test(window.location.pathname)) {
       addReactionNav()
     }
   }
