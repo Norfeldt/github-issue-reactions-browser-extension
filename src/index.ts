@@ -199,7 +199,7 @@ function Reactions() {
         .forEach((btn) => {
           const { textContent } = btn
           if (textContent?.match(/\d/g)) {
-            reactions += textContent.replace(/\s+/g, '') + ' '
+            reactions += textContent.trim().replace(/\s+/g, ' ') + ' '
           }
         })
       const linkContainer = document.createElement('div')
