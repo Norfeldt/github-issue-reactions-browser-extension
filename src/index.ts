@@ -185,31 +185,44 @@ function Reactions() {
 
   const issueUrl =
     window.location.origin + window.location.pathname + window.location.search
+
   // Grabbing all reactions Reactions 👍 🚀 🎉 😄 ❤️ 😕 👎 👀
-  const reactions = ['👍', '🚀', '🎉', '😄', '❤️', '😕', '👎', '👀']
+  const reactions = [
+    { emoji: '👍', name: '+1' },
+    { emoji: '🚀', name: 'rocket' },
+    { emoji: '🎉', name: 'tada' },
+    { emoji: '😄', name: 'smile' },
+    { emoji: '❤️', name: 'heart' },
+    { emoji: '😕', name: 'thinking_face' },
+    { emoji: '👎', name: '-1' },
+    { emoji: '👀', name: 'eyes' },
+  ]
+
+  const findReaction = (node: Element) => (reaction: typeof reactions[number]) =>
+    node.textContent?.includes(reaction.emoji) ||
+    node.querySelector(`g-emoji[alias="${reaction.name}"]`)
 
   Array.from(document.querySelectorAll('.js-comment-reactions-options'))
-    .filter((node) =>
-      reactions.some((reaction) => node.textContent?.includes(reaction))
-    )
+    .filter((node) => reactions.some(findReaction(node)))
     .forEach((reactionSection) => {
-      let reactions = ''
-      reactionSection
-        .querySelectorAll('button[class*="reaction"]')
-        .forEach((btn) => {
-          const { textContent } = btn
-          if (textContent?.match(/\d/g)) {
-            reactions += textContent.trim().replace(/\s+/g, ' ') + ' '
-          }
-        })
+      const combinedReactions = Array.from(
+        reactionSection.querySelectorAll('button[class*="reaction"]')
+      )
+        .map((btn) => ({
+          emoji: reactions.find(findReaction(btn))?.emoji,
+          count: btn.textContent?.match(/\d+/)?.join(''),
+        }))
+        .filter((reaction) => reaction.emoji && reaction.count)
+        .reduce((acc, { emoji, count }) => `${acc} ${emoji} ${count}`, '')
+        
       const linkContainer = document.createElement('div')
       linkContainer.classList.add(reactionClass)
 
       const a = document.createElement('a')
-      const linkText = document.createTextNode('  ' + reactions)
+      const linkText = document.createTextNode('  ' + combinedReactions)
       linkContainer.appendChild(a)
       a.appendChild(linkText)
-      a.title = reactions
+      a.title = combinedReactions
 
       let id = null
       while (id == null) {
