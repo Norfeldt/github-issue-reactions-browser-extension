@@ -1,5 +1,5 @@
-const wesBosYellow = '#ffc600'
-const cobalt2BackgroundBlue = '#183348'
+const primaryColor = 'var(--color-fg-default)'
+const backgroundColor = 'var(--color-social-reaction-bg-hover)'
 const DISPLAY = 'DISPLAY'
 
 const getBrowser = () => {
@@ -85,8 +85,8 @@ function LoadingSpinner() {
   const side = '25px'
   loadingSpinner.style.width = side
   loadingSpinner.style.height = side
-  loadingSpinner.style.border = `2px solid ${cobalt2BackgroundBlue}`
-  loadingSpinner.style.borderTop = `2px solid ${wesBosYellow}`
+  loadingSpinner.style.border = `2px solid ${backgroundColor}`
+  loadingSpinner.style.borderTop = `2px solid ${primaryColor}`
   loadingSpinner.style.borderRadius = '50%'
   loadingSpinner.style.animation = 'spin 1s linear infinite'
   const style = document.createElement('style')
@@ -363,7 +363,7 @@ function Switch() {
   // Add CSS styles to the switch container
   switchContainer.style.display = 'inline-block'
   switchContainer.style.position = 'relative'
-  switchContainer.style.backgroundColor = cobalt2BackgroundBlue
+  switchContainer.style.backgroundColor = backgroundColor
   switchContainer.style.borderRadius = '14px'
   switchContainer.style.width = '30px'
   switchContainer.style.height = '17px'
@@ -385,7 +385,7 @@ function Switch() {
   switchHandle.style.width = '14px'
   switchHandle.style.height = '14px'
   switchHandle.style.borderRadius = '14px'
-  switchHandle.style.backgroundColor = wesBosYellow
+  switchHandle.style.backgroundColor = primaryColor
   switchHandle.style.boxShadow = '0 2px 4px 0 rgba(0, 0, 0, 0.1)'
   switchHandle.style.transition = 'left 0.2s ease-in-out'
 
@@ -440,12 +440,12 @@ function SvgBlockIcon() {
   const svg = `
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="14" height="14" />
-      <line x1="1.5" y1="1.5" x2="3.5" y2="1.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="3.5" x2="3.5" y2="3.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="5.5" x2="7.5" y2="5.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="7.5" x2="3.5" y2="7.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="9.5" x2="5.5" y2="9.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="11.5" x2="3.5" y2="11.5" stroke=${wesBosYellow} stroke-linecap="round"/>
+      <line x1="1.5" y1="1.5" x2="3.5" y2="1.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="3.5" x2="3.5" y2="3.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="5.5" x2="7.5" y2="5.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="7.5" x2="3.5" y2="7.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="9.5" x2="5.5" y2="9.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="11.5" x2="3.5" y2="11.5" stroke=${primaryColor} stroke-linecap="round"/>
     </svg>
   `
   const span = document.createElement('span')
@@ -458,12 +458,12 @@ function SvgInlineBlockIcon() {
   const svg = `
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect width="14" height="14" />
-      <line x1="1.5" y1="1.5" x2="3.5" y2="1.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="5.5" y1="1.5" x2="7.5" y2="1.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="3.5" x2="7.5" y2="3.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="9.5" y1="3.5" x2="11.5" y2="3.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="1.5" y1="5.5" x2="5.5" y2="5.5" stroke=${wesBosYellow} stroke-linecap="round"/>
-      <line x1="7.5" y1="5.5" x2="9.5" y2="5.5" stroke=${wesBosYellow} stroke-linecap="round"/>
+      <line x1="1.5" y1="1.5" x2="3.5" y2="1.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="5.5" y1="1.5" x2="7.5" y2="1.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="3.5" x2="7.5" y2="3.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="9.5" y1="3.5" x2="11.5" y2="3.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="1.5" y1="5.5" x2="5.5" y2="5.5" stroke=${primaryColor} stroke-linecap="round"/>
+      <line x1="7.5" y1="5.5" x2="9.5" y2="5.5" stroke=${primaryColor} stroke-linecap="round"/>
     </svg>
   `
   const span = document.createElement('span')
