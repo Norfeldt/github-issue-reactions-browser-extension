@@ -240,7 +240,7 @@ function Reactions() {
 
       linkContainer.style.margin = '0.5rem 0'
       a.href = issueUrl + '#' + id
-      a.style.border = '1px solid var(--color-border-default, #d2dff0)'
+      a.style.border = '1px solid var(--borderColor-default, #d2dff0)'
       a.style.borderRadius = '100px'
       a.style.padding = '2px 7px'
       a.style.color = 'var(--color-fg-muted)'
