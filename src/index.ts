@@ -108,44 +108,55 @@ function LoadingSpinner() {
   return loadingSpinner
 }
 
-// OBSERVE FOR PAGE MUTATIONS
-function hasAncestorWithId(element: Element | null, id: string) {
-  while (element) {
-    if (element.id === id) {
-      return true
+function RefreshReactionNavByObserver() {
+  // OBSERVE FOR PAGE MUTATIONS
+  function hasAncestorWithId(element: Element | null, id: string) {
+    while (element) {
+      if (element.id === id) {
+        return true
+      }
+      element = element.parentElement
     }
-    element = element.parentElement
+    return false
   }
-  return false
+
+  const observer = new MutationObserver((mutations: MutationRecord[]) => {
+    for (const mutation of mutations) {
+      if (
+        hasAncestorWithId(
+          mutation.target as Element | null,
+          sideBarId.replace('#', '')
+        ) ||
+        hasAncestorWithId(
+          mutation.target as Element | null,
+          wrapperId.replace('#', '')
+        )
+      ) {
+        continue
+      }
+
+      // Check if the URL contains /discussions/ or /issues/
+      if (/\/(discussions|issues|pull)\//.test(window.location.pathname)) {
+        addReactionNav()
+      }
+    }
+  })
+  // Start observing mutations on the whole document
+  observer.observe(document, {
+    childList: true,
+    subtree: true,
+  })
 }
 
-const observer = new MutationObserver((mutations: MutationRecord[]) => {
-  for (const mutation of mutations) {
-    if (
-      hasAncestorWithId(
-        mutation.target as Element | null,
-        sideBarId.replace('#', '')
-      ) ||
-      hasAncestorWithId(
-        mutation.target as Element | null,
-        wrapperId.replace('#', '')
-      )
-    ) {
-      continue
-    }
-
-    // Check if the URL contains /discussions/ or /issues/
-    if (/\/(discussions|issues|pull)\//.test(window.location.pathname)) {
-      addReactionNav()
+if (document.readyState === 'complete') {
+  RefreshReactionNavByObserver()
+} else {
+  document.onreadystatechange = function () {
+    if (document.readyState === 'complete') {
+      RefreshReactionNavByObserver()
     }
   }
-})
-
-// Start observing mutations on the whole document
-observer.observe(document, {
-  childList: true,
-  subtree: true,
-})
+}
 
 // Scan the site for reactions and stick it into the wrapper
 function addReactionNav() {
