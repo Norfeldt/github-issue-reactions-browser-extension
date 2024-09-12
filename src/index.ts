@@ -2,6 +2,13 @@ const primaryColor = 'var(--color-fg-default)'
 const backgroundColor = 'var(--color-social-reaction-bg-hover)'
 const DISPLAY = 'DISPLAY'
 
+const SORT = 'SORT'
+enum SORT_OPT {
+  MOST_RECENT = 'From most recent', // default option
+  OLDEST = 'From oldest',
+  TOP_10 = 'TOP 10 likes',
+}
+
 const getBrowser = () => {
   if (navigator.userAgent.match(/Chrome/)) return chrome
 
@@ -73,7 +80,7 @@ function injectWrapper({ withLoadingSpinner } = { withLoadingSpinner: false }) {
   wrapper.style.top = top + 'px'
   wrapper.innerHTML = ''
 
-  wrapper.appendChild(Title('Reactions', true))
+  wrapper.appendChild(Title('Reactions', true, true))
   if (withLoadingSpinner) {
     wrapper.appendChild(LoadingSpinner())
   }
@@ -157,7 +164,7 @@ function addReactionNav() {
   wrapper.appendChild(Credits())
 }
 
-function Title(title: string, withSwitch = false) {
+function Title(title: string, withSwitch = false, withSort = false) {
   const element = document.createElement('div') satisfies HTMLDivElement
   element.style.display = 'flex'
   element.style.justifyContent = 'space-between'
@@ -175,7 +182,44 @@ function Title(title: string, withSwitch = false) {
     element.appendChild(switchDiv)
   }
 
+  if (withSort) {
+    const sortDiv = document.createElement('div')
+    sortDiv.appendChild(DropDownMenu())
+    element.appendChild(sortDiv)
+  }
+
   return element
+}
+
+function DropDownMenu() {
+  const dropdownMenu = document.createElement('select');
+  dropdownMenu.style.padding = '2px 5px';
+  dropdownMenu.style.borderRadius = '6px';
+  dropdownMenu.style.border = '1px solid var(--color-border-default)';
+  dropdownMenu.style.backgroundColor = 'var(--color-canvas-default)';
+  dropdownMenu.style.color = 'var(--color-fg-default)';
+  dropdownMenu.style.fontSize = '12px';
+  
+  Object.values(SORT_OPT).forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    optionElement.textContent = option;
+    dropdownMenu.appendChild(optionElement);
+  });
+
+  getBrowser().storage.sync.get([SORT])
+    .then((result: { [x: string]: string }) => {
+      const currentSort = result[SORT] as SORT_OPT || SORT_OPT.MOST_RECENT;
+      dropdownMenu.value = currentSort;
+    });
+
+  dropdownMenu.addEventListener('change', (event) => {
+    const selectedOption = (event.target as HTMLSelectElement).value as SORT_OPT;
+    getBrowser().storage.sync.set({ [SORT]: selectedOption });
+    addReactionNav()
+  });
+
+  return dropdownMenu;
 }
 
 const reactionClass = 'reaction-sidebar-link'
@@ -214,7 +258,7 @@ function Reactions() {
         }))
         .filter((reaction) => reaction.emoji && reaction.count)
         .reduce((acc, { emoji, count }) => `${acc} ${emoji} ${count}`, '')
-        
+
       const linkContainer = document.createElement('div')
       linkContainer.classList.add(reactionClass)
 
@@ -248,9 +292,65 @@ function Reactions() {
       all.appendChild(linkContainer)
     })
 
+  const sortedReactions = (
+    parentElement: HTMLDivElement,
+    sortOpt: SORT_OPT,
+    sortBy: (typeof reactions)[number]['emoji']
+  ): void => {
+    if (sortOpt == null || sortOpt === SORT_OPT.MOST_RECENT) return
+
+    const children = Array.from(
+      parentElement.children as HTMLCollectionOf<HTMLElement>
+    ).filter((child: HTMLElement) => {
+      const innerText = child.innerText
+      return innerText && innerText.includes(sortBy)
+    })
+
+    if (children.length === 0) return
+
+    const findEmojiCount = (
+      content: string | null,
+      emoji: (typeof reactions)[number]['emoji']
+    ): number => {
+      if (content == null || emoji == null) return 0
+
+      const emojiPattern = new RegExp(`${sortBy}\\s*(\\d+)`, 'g')
+
+      let match
+      while ((match = emojiPattern.exec(content)) !== null) {
+        const [, countStr] = match
+        return parseInt(countStr, 10)
+      }
+
+      return 0
+    }
+
+    switch (sortOpt) {
+      case SORT_OPT.OLDEST:
+        parentElement.innerHTML = ''
+        parentElement.append(...children.reverse())
+        return
+      case SORT_OPT.TOP_10:
+        const rankChildren = children.sort((a: HTMLElement, b: HTMLElement) => {
+          const aCount = findEmojiCount(a.innerText, sortBy)
+          const bCount = findEmojiCount(b.innerText, sortBy)
+          return bCount - aCount
+        })        
+        parentElement.innerHTML = ''
+        parentElement.append(...rankChildren.slice(0, 10))
+        return
+      default:
+        throw new SyntaxError(`Invalid sort option: ${sortOpt}`)
+    }
+  }
+
   getBrowser()
-    .storage.sync.get([DISPLAY])
+    .storage.sync.get([DISPLAY, SORT])
     .then((result: { [x: string]: string }) => {
+      const sortOpt = (result[SORT] as SORT_OPT) ?? SORT_OPT.MOST_RECENT
+      const defaultSortEmoji = reactions[0].emoji
+      sortedReactions(all, sortOpt, defaultSortEmoji)
+
       const display = (result[DISPLAY] as Display) ?? 'block'
       const elements = Array.from(
         document.getElementsByClassName(reactionClass)
@@ -481,4 +581,5 @@ type Display = 'block' | 'inline-block'
 
 type Settings = {
   [DISPLAY]: Display
+  [SORT]: SORT_OPT
 }
