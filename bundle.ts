@@ -23,6 +23,7 @@ const commonManifest = {
   version,
   description:
     'List a link of reactions on a github issue and pull request page',
+  homepage_url: 'https://github.com/Norfeldt/github-issue-reactions-browser-extension',
   content_scripts: [
     {
       matches: ['*://*.github.com/*'],
