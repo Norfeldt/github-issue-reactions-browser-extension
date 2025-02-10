@@ -1,9 +1,9 @@
-# Archive Notice
+# Archive Notice ⚠️
 
 > This project is no longer actively maintained and has been archived. Feel free to fork it and build upon it. Thank you for your interest and support!
 
 
-# Github Issue Reactions Chrome & Firefox Extension
+# Issue Reactions Chrome & Firefox Extension
 List reaction links on a Github issue or discussion page
 
 <img src="example.png" alt="screenshot example" width="400">
